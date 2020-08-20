@@ -25,15 +25,14 @@ class NotesDashController extends Controller
 
     public function showNotePage() {
         $token = $_COOKIE['token'];
-        $token = new Token($token);
-        $user = JWTAuth::Decode($token);
-        return $user;
+        return $token;
 
         if ($user = Auth::user()){
             $notes = $user->notes();
-            return view('notesdash', compact('notes'));
+            return "somehow here";
         } else {
-            return redirect('/');
+            $notes = \App\Note::all();
+            return "or here";
         }
 
 

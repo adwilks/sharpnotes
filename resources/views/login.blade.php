@@ -42,7 +42,7 @@
                 data:$('#login').serialize(),
                 success:function (data){
                     console.log(data);
-                    setCookie('token', data.token, 7);
+                    setCookie('token', data.access_token, 7);
                     window.location.replace("notesdash");
                 },
                 error: function () {

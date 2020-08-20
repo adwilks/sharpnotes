@@ -19,11 +19,13 @@ $router->get('', function() {
 });
 
 
-$router->post('/login','AuthController@postLogin');
-$router->get('/notesdash', 'NotesDashController@showNotePage');
-$router->group(['middleware'=>'jwt.auth'], function () use ($router){
+$router->post('/login','AuthController@login');
+$router->get('/notesdash', 'NotesDashController@storeNote');
 
-    $router->post('/notesdash', 'NotesDashController@storeNote');
+$router->group(['middleware'=>'jwt.auth'], function () use ($router){
+    $router->get('/notesdash', 'NotesDashController@showNotePage');
+    $router->get('/notesdashforuser{id}', 'NotesDashController@showNotePage');
+    $router->post('/notesdashforuser{id}', 'NotesDashController@storeNote');
     $router->get('/notesdash/{id}', 'NotesDashController@editNote');
     $router->post('/notesdash/delete/{id}', 'NotesDashController@deleteNote');
 });
