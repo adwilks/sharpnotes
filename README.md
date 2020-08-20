@@ -22,5 +22,5 @@ From the directory where you cloned  the project run: `php artisan migrate`
 From the same directory run: `php artisan db:seed`
 5. Serve the project: Serve the website with `php artisan serve`
 
-###Extra Notes
+### Extra Notes
 This project was developed on a homestead VM. I'm doing further testing to see the performance on other builds.
