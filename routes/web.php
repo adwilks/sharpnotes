@@ -21,22 +21,14 @@ $router->get('', function() {
 
 $router->post('/login','AuthController@login');
 
+
 $router->group(['middleware'=>'auth'], function () use ($router){
     $router->get('/notesdash', 'NotesDashController@getUserNotes');
-    $router->post('/notesdashforuser/{id}', 'NotesDashController@storeNote');
-    $router->get('/notesdash/{id}', 'NotesDashController@editNote');
+    $router->post('/notesdash', 'NotesDashController@storeNote');
+    $router->post('/notesdash/{id}', 'NotesDashController@editNote');
     $router->post('/notesdash/delete/{id}', 'NotesDashController@deleteNote');
+    $router->post('/logout','AuthController@logout');#ecf0f1
 });
 
-
-
-//$router->group([
-//    'prefix' => 'auth'
-//], function ($router) {
-//
-//    $router->post('logout', 'AuthController@logout');
-//    $router->post('refresh', 'AuthController@refresh');
-//    $router->post('me', 'AuthController@me');
-//});
 
 

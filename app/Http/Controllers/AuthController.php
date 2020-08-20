@@ -50,9 +50,16 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        if (Auth::user()) {
+            auth()->logout();
+            return view('logout');
+        } else {
 
-        return response()->json(['message' => 'Successfully logged out']);
+            redirect('/');
+        }
+
+
+
     }
 
     /**

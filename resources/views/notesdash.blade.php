@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="fixed-top">
+    <div class="fixed-top text-center">
         <h1> SharpNotes</h1>
 
     </div>
@@ -16,12 +16,12 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                Notes
+                @if(Auth::user())
+                    {{Auth::user()->name}}'s
+                @endif Notes
             </div>
 
-            @if(Auth::user())
-                <li>{{Auth::user()->name}}</li>
-            @endif
+
 
             <div class="panel-body">
                 <table class="table table-striped task-table" id="notes-table">
@@ -37,10 +37,10 @@
 
                         <!-- Logout Button -->
                         <td>
-                            <form action="{" method="POST">
+                            <form action="/logout" method="POST">
 
 
-                                <button type="submit" id="logout-" class="btn btn-primary">
+                                <button type="submit" id="logout" class="btn btn-primary">
                                     <i class="fa fa-btn fa-trash"></i>Logout
                                 </button>
                             </form>
@@ -54,8 +54,8 @@
                     <tbody>
                     @foreach ($notes as $note)
                         <tr>
-                            <td class="table-text"><div>{{ $note->title }}</div></td>
-                            <td class="table-text"><div>{{$note->content}}</div></td>
+                            <td class="table-text" ><div id="title-{{$note->id}}">{{ $note->title }}</div></td>
+                            <td class="table-text"><div>(Created by {{Auth::user()->name}}, {{$note->created_at}}</div></td>
 
                             <!-- Note Edit Button -->
                             <td>
@@ -74,6 +74,10 @@
                                     </button>
                                 </form>
                             </td>
+
+                        </tr>
+                        <tr>
+                            <td class="table-text"><div id="content-{{$note->id}}">{{$note->content}}</div></td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -96,7 +100,8 @@
                 <form id="note-modal-form">
 
                     <div class="modal-body">
-
+                            <div id="note-modal-id" name="">
+                            </div>
                             <div class="form-group">
                                 <label for="title" class="col-form-label">Note Title</label>
                                 <input type="text" class="form-control" id="note-title" name="title">
@@ -122,11 +127,22 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-
+            $('#note-modal-form')[0].reset();
             $('#note-modal-form').on('submit', function(event){
                 event.preventDefault();
                 if ($('#note-title').val() == "") {
                     alert("A note title is required");
+                } else if ($('#note-modal-id').val() != ""){
+                    $.ajax({
+                        url:"/notesdash/" + $('#note-modal-id').val(),
+                        method:"POST",
+                        data:$('#note-modal-form').serialize(),
+                        success:function (data){
+                            $('#note-modal-form')[0].reset();
+                            $('#note-modal').modal('hide');
+                            window.location.replace("notesdash");
+                        }
+                    })
                 } else {
 
                     $.ajax({
@@ -136,19 +152,29 @@
                         success:function (data){
                             $('#note-modal-form')[0].reset();
                             $('#note-modal').modal('hide');
-
+                            window.location.replace("notesdash");
                         }
                     })
 
                 }
             })
-            $('#edit-note-button').click(function () {
-                let id = $(this).attr('name');
+            $('button[id^="edit"]').click(function (e) {
+                $('#note-modal-form')[0].reset();
+
+                let curId = this.name;
+                let curTitle = '#title-' + curId;
+                let curContent = '#content-' + curId;
+                let titleVal = $(curTitle).text();
+                let contentVal = $(curContent).text();
+                $('#note-modal-id').val(curId);
+                $('#note-title').val(titleVal);
+                $('#note-content').val(contentVal);
+
 
                 $.ajax({
-                    url: '/notesdash/' + id,
-                    type: 'GET',
-                    data: {id: id},
+                    url: '/notesdash/' + curId,
+                    type: 'POST',
+                    data: {curId: curId},
                     success: function(response) {
                         console.log('note load successful');
                         console.log(response);

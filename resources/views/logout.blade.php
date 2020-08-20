@@ -5,5 +5,5 @@
         SHARPNOTES
     </div>
 
-    <h1>So long, Space Cowboy</h1>
+    <h1>See you soon!</h1>
 @endsection

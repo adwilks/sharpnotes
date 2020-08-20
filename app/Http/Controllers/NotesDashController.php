@@ -25,16 +25,22 @@ class NotesDashController extends Controller
     }
 
     public function getUserNotes() {
-        $user = Auth::user();
-        $notes = $user->notes;
-        return view('notesdash',compact('notes'));
+        if($user = Auth::user()) {
+            $user = Auth::user();
+            $notes = $user->notes;
+            return view('notesdash', compact('notes'));
+        } else {
+            return redirect('/');
+        }
     }
-    
+
 
     public function storeNote(Request $request) {
         $data = $request->all();
+
         if ($user = Auth::user()) {
             $user->notes()->create($data);
+            return redirect('/notesdash');
         } else {
             return redirect('/');
         }
@@ -42,9 +48,11 @@ class NotesDashController extends Controller
 
     }
 
-    public function editNote($id) {
+    public function editNote(Request $request, $id) {
         if ($user = Auth::user()){
-            return $note = $user->notes()->where('id', $id)->first;
+            $note = Note::where('id', $id)->first();
+            $note->update($request->all());
+            return redirect('/notesdash');
         } else {
             return redirect('/');
         }
@@ -54,7 +62,7 @@ class NotesDashController extends Controller
 
     public  function  deleteNote($id) {
         if ($user = Auth::user()){
-            $note = $user->notes()->where('id', $id)->first;
+            $note = $user->notes->where('id', $id)->first;
             $note->delete();
             return redirect('/notesdash');
         } else {
