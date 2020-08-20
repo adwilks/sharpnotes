@@ -14,8 +14,10 @@ There are a few steps to get rolling, broadly these are:
 1. Clone project: 
 git clone https://github.com/adwilks/sharpnotes 
 2. Configure MySQL:
-Run the configure_db script to get the database configured. Alternatively (or if there are problems): Create a new db user: app, password: secret. Create a new database: c1. 
-Grant app all rights to the c1 database.
+Run the configure_db script to get the database configured:
+`bash configure_db c1 app secret` (You will need to know the MySql Root password.
+Alternatively (or if there are problems): Create a new db user: app, password: secret. Create a new database: c1. 
+Grant 'app' all rights to the c1 database.
 3. Run Migrations: 
 From the directory where you cloned  the project run: `php artisan migrate`  
 4. Run Seeds:
