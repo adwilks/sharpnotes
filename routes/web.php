@@ -18,23 +18,25 @@ $router->get('', function() {
     return view('login');
 });
 
-$router->group(['middleware'=>'auth'], function () use ($router){
-    $router->get('/notesdash', 'NotesDashController@showNotePage');
+
+$router->post('/login','AuthController@postLogin');
+$router->get('/notesdash', 'NotesDashController@showNotePage');
+$router->group(['middleware'=>'jwt.auth'], function () use ($router){
+
     $router->post('/notesdash', 'NotesDashController@storeNote');
     $router->get('/notesdash/{id}', 'NotesDashController@editNote');
     $router->post('/notesdash/delete/{id}', 'NotesDashController@deleteNote');
 });
 
-$router->post('login', 'AuthController@login');
-$router->group([
 
-    'prefix' => 'auth'
 
-], function ($router) {
-
-    $router->post('logout', 'AuthController@logout');
-    $router->post('refresh', 'AuthController@refresh');
-    $router->post('me', 'AuthController@me');
-});
+//$router->group([
+//    'prefix' => 'auth'
+//], function ($router) {
+//
+//    $router->post('logout', 'AuthController@logout');
+//    $router->post('refresh', 'AuthController@refresh');
+//    $router->post('me', 'AuthController@me');
+//});
 
 

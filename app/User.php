@@ -42,9 +42,6 @@ class User extends model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(\App\Note::class);
     }
 
-    use Notifiable;
-
-    // Rest omitted for brevity
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

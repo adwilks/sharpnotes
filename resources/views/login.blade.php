@@ -42,15 +42,27 @@
                 data:$('#login').serialize(),
                 success:function (data){
                     console.log(data);
+                    setCookie('token', data.token, 7);
+                    window.location.replace("notesdash");
                 },
                 error: function () {
-                    //alert('error logging in')
+                    alert('error logging in')
                 }
             })
 
 
         })
     });
+
+    function setCookie(name,value,days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days*24*60*60*1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    }
 </script>
 
 

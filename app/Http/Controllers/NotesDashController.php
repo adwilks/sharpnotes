@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Token;
 
 class NotesDashController extends Controller
 {
@@ -19,7 +21,14 @@ class NotesDashController extends Controller
         //
     }
 
+
+
     public function showNotePage() {
+        $token = $_COOKIE['token'];
+        $token = new Token($token);
+        $user = JWTAuth::Decode($token);
+        return $user;
+
         if ($user = Auth::user()){
             $notes = $user->notes();
             return view('notesdash', compact('notes'));
