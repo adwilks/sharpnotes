@@ -12,7 +12,7 @@ For testing, the vendor folder for stable build is included in the repository.
 ## Getting Started
 There are a few steps to get rolling, broadly these are:
 1. Clone project: 
-git clone https://github.com/adwilks/sharpnotes ~/code
+git clone https://github.com/adwilks/sharpnotes 
 2. Configure MySQL:
 Run the configure_db script to get the database configured. Alternatively (or if there are problems): Create a new db user: app, password: secret. Create a new database: c1. 
 Grant app all rights to the c1 database.
@@ -22,5 +22,5 @@ From the directory where you cloned  the project run: `php artisan migrate`
 From the same directory run: `php artisan db:seed`
 5. Serve the project: Serve the website with `php artisan serve`
 
-###Extra Notes
+### Extra Notes
 This project was developed on a homestead VM. I'm doing further testing to see the performance on other builds.
