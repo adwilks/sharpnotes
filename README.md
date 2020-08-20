@@ -12,7 +12,7 @@ For testing, the vendor folder for stable build is included in the repository.
 ## Getting Started
 There are a few steps to get rolling, broadly these are:
 1. Clone project: 
-git clone https://github.com/adwilks/sharpnotes ~/code
+git clone https://github.com/adwilks/sharpnotes 
 2. Configure MySQL:
 Run the configure_db script to get the database configured. Alternatively (or if there are problems): Create a new db user: app, password: secret. Create a new database: c1. 
 Grant app all rights to the c1 database.
