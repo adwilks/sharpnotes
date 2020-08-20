@@ -20,12 +20,10 @@ $router->get('', function() {
 
 
 $router->post('/login','AuthController@login');
-$router->get('/notesdash', 'NotesDashController@storeNote');
 
-$router->group(['middleware'=>'jwt.auth'], function () use ($router){
-    $router->get('/notesdash', 'NotesDashController@showNotePage');
-    $router->get('/notesdashforuser{id}', 'NotesDashController@showNotePage');
-    $router->post('/notesdashforuser{id}', 'NotesDashController@storeNote');
+$router->group(['middleware'=>'auth'], function () use ($router){
+    $router->get('/notesdash', 'NotesDashController@getUserNotes');
+    $router->post('/notesdashforuser/{id}', 'NotesDashController@storeNote');
     $router->get('/notesdash/{id}', 'NotesDashController@editNote');
     $router->post('/notesdash/delete/{id}', 'NotesDashController@deleteNote');
 });

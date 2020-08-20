@@ -4,9 +4,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\JWT;
 use Tymon\JWTAuth\Token;
 
 class NotesDashController extends Controller
@@ -21,23 +24,12 @@ class NotesDashController extends Controller
         //
     }
 
-
-
-    public function showNotePage() {
-        $token = $_COOKIE['token'];
-        return $token;
-
-        if ($user = Auth::user()){
-            $notes = $user->notes();
-            return "somehow here";
-        } else {
-            $notes = \App\Note::all();
-            return "or here";
-        }
-
-
-
+    public function getUserNotes() {
+        $user = Auth::user();
+        $notes = $user->notes;
+        return view('notesdash',compact('notes'));
     }
+    
 
     public function storeNote(Request $request) {
         $data = $request->all();

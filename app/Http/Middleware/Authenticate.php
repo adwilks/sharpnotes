@@ -38,12 +38,15 @@ class Authenticate
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next)
     {
-        if ($this->auth->guard($guard)->guest()) {
-            return redirect('');
+        $jwt_token = $request->cookie('jwt_token');
+        if ( ! $jwt_token) {
+            return $next($request);
         }
-        //View::share([ 'currentUser' => $this->auth->user() ]);
+
+        $request->headers->set('Authorization', "Bearer {$jwt_token}");
+
         return $next($request);
     }
 }

@@ -9,36 +9,14 @@ use App\User;
 
 class JwtMiddleware
 {
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next)
     {
-//    $token = $_COOKIE['token'];
-//
-//        if(isset($_COOKIE['token'])){
-//            $token = $_COOKIE['token'];
-//        }
-//        if(!$token) {
-//            // Unauthorized response if there isn't a token
-//            return response()->json([
-//                'error' => 'Token not provided.'
-//            ], 401);
-//        }
+        $jwt_token = $request->cookie('token');
+        if ( ! $jwt_token) {
+            return $next($request);
+        }
 
-//        try {
-//            $credentials = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
-//        } catch(ExpiredException $e) {
-//            return response()->json([
-//                'error' => 'Provided token is expired.'
-//            ], 400);
-//        } catch(Exception $e) {
-//            return response()->json([
-//                'error' => 'An error while decoding token.'
-//            ], 400);
-//        }
-//
-//        $user = User::find($credentials->sub);
-//
-//        // Now let's put the user in the request class so that you can grab it from there
-//        $request->auth = $user;
+        $request->headers->set('Authorization', "Bearer {$jwt_token}");
 
         return $next($request);
     }
